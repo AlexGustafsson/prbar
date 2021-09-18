@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleIdentifier</key>
+		<string>se.axgn.prbar</string>
+		<key>CFBundleDisplayName</key>
+		<string>prbar</string>
+		<key>CFBundleName</key>
+		<string>prbar</string>
+		<key>CFBundlePackageType</key>
+		<string>BNDL</string>
+		<key>NSHumanReadableCopyright</key>
+		<string>Copyright © 2021 Alex Gustafsson. All rights reserved.</string>
+		<key>LSMinimumSystemVersion</key>
+	 	<string>11.0</string>
+		<key>CFBundleShortVersionString</key>
+		<string>0.1.0</string>
+		<key>CFBundleVersion</key>
+		<string>0.1.0</string>
+		<key>LSUIElement</key>
+		<string>true</string>
+		<key>CFBundleIconFile</key>
+		<string>AppIcon.icns</string>
+	</dict>
+</plist>
