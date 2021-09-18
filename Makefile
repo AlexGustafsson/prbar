@@ -10,12 +10,12 @@ CC=clang
 
 build: build/prbar.app
 
-build/prbar.app: build/prbar
+build/prbar.app: build/prbar/release/prbar
 	mkdir -p build/prbar.app/Contents/MacOS
 	cp build/prbar/release/prbar build/prbar.app/Contents/MacOS
 	cp SupportingFiles/prbar/Info.plist build/prbar.app/Contents
 
-build/prbar: Sources/prbar/main.swift Sources/prbar/AppDelegate.swift Sources/prbar/Menu.swift
+build/prbar/release/prbar: Sources/prbar/main.swift Sources/prbar/AppDelegate.swift Sources/prbar/Menu.swift
 	swift build --configuration release --product "prbar" --build-path "build/prbar"
 
 # Lint all Swift code

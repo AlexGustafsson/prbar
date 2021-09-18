@@ -3,7 +3,7 @@ import ArgumentParser
 import Foundation
 import os
 
-private let logger = Logger(subsystem: "prbar", category: "Main")
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "UI/Main")
 
 struct Prbar: ParsableCommand {
   static let configuration = CommandConfiguration(abstract: "Interact with prbar")
