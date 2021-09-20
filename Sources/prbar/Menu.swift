@@ -1,6 +1,8 @@
 import AppKit
 
-class Menu: NSObject {
+class Menu {
+  private let store: Store
+
   private var statusItem: NSStatusItem!
   private var menu: NSMenu!
   private var settingsMenu: NSMenu!
@@ -10,8 +12,8 @@ class Menu: NSObject {
   typealias MenuItemClickedCallback = () -> Void
   var onQuit: MenuItemClickedCallback = {}
 
-  override init() {
-    super.init()
+  init(withStore store: Store) {
+    self.store = store
 
     self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     self.statusItem.button?.title = "PRs"

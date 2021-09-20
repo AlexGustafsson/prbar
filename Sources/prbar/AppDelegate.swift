@@ -10,48 +10,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   private var menu: Menu?
 
   func applicationDidFinishLaunching(_: Notification) {
-    let menu = Menu()
+    let keychain = Keychain(service: Bundle.main.bundleIdentifier!)
+    var store = Store(fromKeychain: keychain)
+    if store == nil {
+      let token = AuthPrompt().prompt()
+      store = Store(fromToken: token)
+
+      do {
+          try keychain
+                  .label("prbar (github.com)")
+                  .comment("GitHub Private Access Token")
+                  .set(token, key: applicationName)
+        } catch let error {
+          logger.error("Unable to create Keychain entry: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    store!.connect()
+
+    let menu = Menu(withStore: store!)
     menu.onQuit = {
       NSApplication.shared.terminate(nil)
     }
     self.menu = menu
-
-    let keychain = Keychain(service: Bundle.main.bundleIdentifier!)
-
-    var token = keychain[applicationName]
-    if token == nil {
-      token = AuthPrompt().prompt()
-      do {
-        try keychain
-          .label("prbar (github.com)")
-          .comment("GitHub Private Access Token")
-          .set(token!, key: applicationName)
-      } catch let error {
-        logger.error("Failed to set GitHub token: \(error.localizedDescription)")
-      }
-    }
-
-    let config = TokenConfiguration(token)
-    let client = Octokit(config)
-    client.me() { response in
-      switch response {
-      case .success(let user):
-        menu.setUsername(user.login!)
-      case .failure(let error):
-      logger.error("Unable to authenticated: \(error.localizedDescription)")
-        DispatchQueue.main.async {
-          AuthAlert(error: error).runModal()
-          NSApplication.shared.terminate(nil)
-        }
-      }
-    }
   }
 
   func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { false }
 }
 
 class AuthAlert: NSAlert {
-  init(error: Error) {
+  override init() {
     super.init()
     self.messageText = "Unable to authenticate"
     self.informativeText =
