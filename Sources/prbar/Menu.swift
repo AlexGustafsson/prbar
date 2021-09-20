@@ -7,7 +7,6 @@ class Menu {
   private var menu: NSMenu!
   private var settingsMenu: NSMenu!
   private var showAuth: Bool = false
-  private var userItem: NSMenuItem?
 
   typealias MenuItemClickedCallback = () -> Void
   var onQuit: MenuItemClickedCallback = {}
@@ -21,8 +20,12 @@ class Menu {
     self.menu = NSMenu()
 
     self.settingsMenu = NSMenu()
-    self.userItem = NSMenuItem(title: "Username", action: nil, keyEquivalent: "")
-    self.settingsMenu.addItem(self.userItem!)
+    let userItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    self.store.username.subscribe(onNext:{ value in
+      userItem.title = value
+    })
+
+    self.settingsMenu.addItem(userItem)
     self.settingsMenu.addItem(
       NSMenuItem(title: "Quit", action: #selector(self.quit), target: self, keyEquivalent: "")
     )
@@ -41,10 +44,6 @@ class Menu {
       self.showAuth = true
       self.statusItem.menu = self.menu
     }
-  }
-
-  func setUsername(_ username: String) {
-    self.userItem!.title = username
   }
 
   @objc func quit() {
